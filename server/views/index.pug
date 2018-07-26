@@ -1,0 +1,143 @@
+extends ./layouts/default
+block title
+	title Koa Douban 首页
+block content
+	style.
+		header{
+			background:#00474f;
+			position:-webkit-sticky;
+			top:0;
+			color:#E7DACB;
+			display:flex;
+			justify-content:space-between;
+			align-items:center;
+			height:50px;
+			z-index:500;
+		}
+		@media (min-width: 768px) {
+			.sidebar{
+				position: -webkit-sticky;
+				position: sticky;
+				top:4rem;
+				z-index: 1000;
+				height: calc(100vh-4rem);
+				border-right: 1px solid rgba(0,0,0,.1);
+				order: 0;
+				border-bottom: 1px solid rgba(0,0,0,.1);
+			}
+			.cat-links{
+				display: block!important;
+				max-height: calc(100vh-9rem);
+				overflow-y: auto;
+				padding-top: 1rem;
+				padding-bottom: 1rem;
+				margin-right: -15px;
+				margin-left: -15px;
+			}
+		}
+		.sidebar-link{
+			display:block;
+			padding:.25rem 1.5rem;
+			font-weight:500;
+			color：rgba(0,0,0,.55)
+		}
+		.sidebar .nav > li > a{
+			display:block;
+			padding:.25rem 1.5rem;
+			font-size: 90%;
+			color:rgba(0,0,0,.65)
+		}
+		.sidebar-item.active > .sidebar-inner{
+			display:block;
+		}
+		.card{
+			margin-bottom:1.5rem;
+		}
+		.switcher{
+			position:relative;
+			padding:1rem 15px;
+			margin-right:-15px;
+			border-bottom: 1px solid rgba(0,0,0,.05);
+		}
+
+		.ml-3,.mx-3{
+			margin-left:1rem!important;
+		}
+		.btn-link{
+			font-weight:400;
+			color:#007bff;
+			background-color:transparent;
+		}
+	include ./includes/header
+	.container-fluid.row
+		include ./includes/sidebar
+		.col-12.col-md-9.col-xl-9.py-md-3.pl-md-5.content
+			.row
+				.col-md-6
+					.card
+						img.cart-img-top(src="https://ss0.baidu.com/73x1bjeh1BF3odCf/it/u=4108543432,524394920&fm=85&s=F922767AB616C83459866252030050FD")
+						.card-body
+							h4.card-title 这是电影标题
+							p.card-desc   这是电影描述
+						.card-footer
+							small.text-muted 一天前更新
+				.col-md-6
+					.card
+						img.cart-img-top(src="https://ss0.baidu.com/73x1bjeh1BF3odCf/it/u=4108543432,524394920&fm=85&s=F922767AB616C83459866252030050FD")
+						.card-body
+							h4.card-title 这是电影标题
+							p.card-desc   这是电影描述
+						.card-footer
+							small.text-muted 一天前更新
+			.row
+				.col-md-6
+					.card
+						img.cart-img-top(src="https://ss0.baidu.com/73x1bjeh1BF3odCf/it/u=4108543432,524394920&fm=85&s=F922767AB616C83459866252030050FD")
+						.card-body
+							h4.card-title 这是电影标题
+							p.card-desc   这是电影描述
+						.card-footer
+							small.text-muted 一天前更新
+				.col-md-6
+					.card
+						img.cart-img-top(src="https://ss0.baidu.com/73x1bjeh1BF3odCf/it/u=4108543432,524394920&fm=85&s=F922767AB616C83459866252030050FD") data-video="http://113.215.6.98/hc.yinyuetai.com/uploads/videos/common/B2B6013BA4B457FA84D8FE5272EEA86D.flv?sc=30e124bb50b23cc7&br=745&vid=520419&aid=994&area=JP&vst=0")
+						.card-body
+							h4.card-title 这是电影标题
+							p.card-desc   这是电影描述
+						.card-footer
+							small.text-muted 一天前更新
+	#myModal.modal.fade.db-exaple-model-lg(tabindex='-1',role="dialog",aria-labelledby="myLargeModalLabel",aria-hidden='true')
+		.modal-dialog.modal-lg
+			#videoModal.modal-content
+include ./includes/script
+script.
+	var player = null;
+	$(document).ready(function(){
+		$('#myModal').on('hidden.bs.modal',function(e){
+			if(player && player.pause) player.pause()
+		})
+		$('.cart-img-top').click(function(e){
+			var image  = $(this).data("video")
+			var video  = $(this).data("src")
+
+			$('#myModal').modal('show')
+
+			if(!player){
+				palyer = new DPlayer({
+					container: document.getElementById('videoModal'),
+				    screenshot: true,
+				    video: {
+				        url: video,
+				        pic: image,
+				        thumbnails: image
+				    }
+				})
+			}else{
+				player.switchVideo({
+					url: video,
+			        pic: image,
+			        type:'auto'
+				})
+			}
+		})
+	})
